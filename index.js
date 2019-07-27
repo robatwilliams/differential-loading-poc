@@ -12,16 +12,27 @@ const writeFile = util.promisify(fs.writeFile);
   ]);
 
   const changes = Diff.diffChars(oldContent, newContent);
-  const updated = applyPatch(changes, oldContent);
+  const compressedChanges = compressChanges(changes);
+  const updated = applyPatch(compressedChanges, oldContent);
 
   if (updated !== newContent) {
     throw new Error('Patching old did not yield new');
   }
 
-  writeFile('./out/changes.json', JSON.stringify(changes, undefined, 2));
-  writeFile('./out/changes.min.json', JSON.stringify(changes));
+  writeFile('./out/changes.json', JSON.stringify(compressedChanges, undefined, 2));
+  writeFile('./out/changes.min.json', JSON.stringify(compressedChanges));
 })();
 
+function compressChanges(changes) {
+  return changes.map(change => {
+    if (change.added) {
+      return change;
+    } else {
+      const { value, ...keep } = change;
+      return keep;
+    }
+  });
+}
 
 //////////// From https://github.com/kpdecker/jsdiff/issues/95#issuecomment-218429097
 
