@@ -1,0 +1,13 @@
+{
+  "name": "diff-play",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "diff": "node ./index.js && brotli-cli ./out/changes.min.json",
+    "compress-sources": "brotli-cli ./resources/react-dom/16.8.0/react-dom.production.min.js ./resources/react-dom/16.8.1/react-dom.production.min.js"
+  },
+  "dependencies": {
+    "brotli-cli": "0.0.1",
+    "diff": "^4.0.1"
+  }
+}
