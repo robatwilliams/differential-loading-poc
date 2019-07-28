@@ -68,6 +68,7 @@ async function fetchDifferential(request, package, cachedPackage) {
       'x-differential-base-version': cachedPackage.version,
     },
   });
+  // TODO handle response 417 for unknown base version
 
   const cachedResponse = await caches.match(cachedPackage.url, { ignoreVary: true });
   const cachedContent = await cachedResponse.text();

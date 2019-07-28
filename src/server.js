@@ -13,6 +13,7 @@ const PORT = 80;
 const readFile = util.promisify(fs.readFile);
 
 const app = express();
+// TODO brotli; needs https://github.com/expressjs/compression/issues/71
 app.use(compression());
 app.use(express.static('./static'));
 
@@ -55,6 +56,7 @@ async function handleDifferentialRequest(request, response, fullContent) {
   }
 
   const delta = createDelta(baseContent, fullContent);
+  // TODO if the delta is too big / bigger than the content, respond with content
 
   const fullDigest = crypto.createHash('sha256').update(fullContent).digest('hex');
   response.set('x-differential-target-checksum', fullDigest);
