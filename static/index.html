@@ -13,10 +13,29 @@
     <script>
       navigator.serviceWorker.register('./serviceWorker.js');
     </script>
+
+    <script>
+      class Hello extends React.Component {
+        render() {
+          return React.createElement('div', null, `Hello ${this.props.toWhat}`);
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        ReactDOM.render(
+          React.createElement(Hello, { toWhat: 'World' }, null),
+          document.getElementById('root')
+        );
+      });
+    </script>
   </head>
 
   <body>
     Differential loading test page
+
+    <div id="root">
+      React will render here; if everything's worked, you shouldn't see this text.
+    </div>
   </body>
 
 </html>
