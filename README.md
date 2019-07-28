@@ -19,6 +19,22 @@ The existing pattern of service worker driven caching is extended to be aware of
 
 Correctness is verified by the server test-applying the deltas it generates, and the service worker check the final content against an expected hash (checksum) sent by the server.
 
+### Example differential request & response
+<pre>
+curl http://localhost/react-dom/<strong>16.8.1</strong>/react-dom.production.min.js -I \
+  -H 'Accept-Encoding: gzip' \
+  <strong>-H 'Accept: application/delta+json'</strong> \
+  <strong>-H 'x-differential-base-version: 16.8.0'</strong>
+
+HTTP/1.1 200 OK
+Cache-Control: public, max-age=31536000
+Vary: Accept, x-differential-base-version, Accept-Encoding
+<strong>x-differential-target-checksum: b45b7f77871a78d00ac134ff65d209c08361703853e57eacfd46c5a0b6bf26ee</strong>
+<strong>x-differential-base-version: 16.8.0</strong>
+Content-Type: application/delta+json; charset=utf-8
+Content-Length: 34434
+</pre>
+
 
 ## Gains
 Consider the scenario of upgrading `react-dom` from version 16.8.0 to 16.8.1. These are the network transfer sizes in KB.
