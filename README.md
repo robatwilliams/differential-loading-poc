@@ -17,7 +17,7 @@ Often however, we have an older, very similar, version of the same file already 
 
 The existing pattern of service worker driven caching is extended to be aware of resources' versions, and paired with a smart web server that's also version-aware.
 
-Correctness is verified by the server test-applying the deltas it generates, and the service worker check the final content against an expected hash (checksum) sent by the server.
+Correctness is verified by the server test-applying the deltas it generates, and the service worker checking the final content against an expected hash (checksum) sent by the server.
 
 ### Example differential request & response
 <pre>
