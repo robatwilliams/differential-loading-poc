@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "diff": "node ./index.js && brotli-cli ./out/changes.min.json",
-    "compress-sources": "brotli-cli ./resources/react-dom/16.8.0/react-dom.production.min.js ./resources/react-dom/16.8.1/react-dom.production.min.js"
+    "compress-sources": "brotli-cli ./resources/react-dom/16.8.0/react-dom.production.min.js ./resources/react-dom/16.8.1/react-dom.production.min.js",
+    "server": "node ./src/server.js"
   },
   "dependencies": {
     "brotli-cli": "0.0.1",
-    "diff": "^4.0.1"
+    "compression": "^1.7.4",
+    "diff": "^4.0.1",
+    "express": "^4.17.1"
   }
 }
