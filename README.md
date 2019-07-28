@@ -19,7 +19,22 @@ The existing pattern of service worker driven caching is extended to be aware of
 
 Correctness is verified by the server test-applying the deltas it generates, and the service worker checking the final content against an expected hash (checksum) sent by the server.
 
-### Example differential request & response
+
+## Gains
+Consider the scenario of upgrading `react-dom` from version 16.8.0 to 16.8.1. These are the network transfer sizes in KB.
+
+<pre>
+            Uncompressed    gzip   brotli
+Complete           104.7    41.4     33.1
+Delta               33.6     2.5      1.5
+</pre>
+
+There are overheads in calculating the delta on the server, and in applying it on the client. I haven't measured or optimised either. The former could probably be eliminated using output caching. The latter could make the entire approach yield a net negative time-wise, depending on network quality and device performance. Setting a maximum patch size would probably be wise.
+
+
+## Example differential fetch
+Request made by the service worker, and response received.
+
 <pre>
 curl http://localhost/react-dom/<strong>16.8.1</strong>/react-dom.production.min.js -I \
   -H 'Accept-Encoding: gzip' \
@@ -34,18 +49,6 @@ Vary: Accept, x-differential-base-version, Accept-Encoding
 Content-Type: application/delta+json; charset=utf-8
 Content-Length: 34434
 </pre>
-
-
-## Gains
-Consider the scenario of upgrading `react-dom` from version 16.8.0 to 16.8.1. These are the network transfer sizes in KB.
-
-<pre>
-            Uncompressed    gzip   brotli
-Complete           104.7    41.4     33.1
-Delta               33.6     2.5      1.5
-</pre>
-
-There are overheads in calculating the delta on the server, and in applying it on the client. I haven't measured or optimised either. The former could probably be eliminated using output caching. The latter could make the entire approach yield a net negative time-wise, depending on network quality and device performance. Setting a maximum patch size would probably be wise.
 
 
 ## Demo
