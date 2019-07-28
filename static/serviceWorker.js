@@ -73,7 +73,14 @@ async function fetchDifferential(request, package, cachedPackage) {
   const cachedContent = await cachedResponse.text();
   const delta = await deltaResponse.json();
 
-  return new Response(applyDelta(delta, cachedContent));
+  const updatedContent = applyDelta(delta, cachedContent);
+  const checksum = await sha256(updatedContent);
+
+  if (checksum !== deltaResponse.headers.get('x-differential-target-checksum')) {
+    throw new Error('Applying delta did not yield expected checksum. Actual: ' + checksum);
+  }
+
+  return new Response(updatedContent);
 }
 
 function parsePackageUrl(url) {
@@ -113,4 +120,22 @@ function insertAt(str, index, add) {
 
 function removeAt(str, index, count) {
   return str.slice(0, index) + str.slice(index + count);
+}
+
+async function sha256(message) {
+  // From https://stackoverflow.com/a/48161723/1373514
+  // & https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+
+  // encode as UTF-8
+  const msgBuffer = new TextEncoder('utf-8').encode(message);
+
+  // hash the message
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+
+  // convert ArrayBuffer to Array
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+  // convert bytes to hex string
+  const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+  return hashHex;
 }

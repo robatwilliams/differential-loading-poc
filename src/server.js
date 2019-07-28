@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const fs = require('fs');
 const util = require('util');
 const compression = require('compression');
@@ -54,6 +55,9 @@ async function handleDifferentialRequest(request, response, fullContent) {
   }
 
   const delta = createDelta(baseContent, fullContent);
+
+  const fullDigest = crypto.createHash('sha256').update(fullContent).digest('hex');
+  response.set('x-differential-target-checksum', fullDigest);
 
   response.set(BASE_VERSION_HEADER, baseVersion);
   response.type(DELTA_CONTENT_TYPE);
