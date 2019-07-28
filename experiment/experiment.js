@@ -19,8 +19,8 @@ const writeFile = util.promisify(fs.writeFile);
     throw new Error('Patching old did not yield new');
   }
 
-  writeFile('./out/changes.json', JSON.stringify(compressedChanges, undefined, 2));
-  writeFile('./out/changes.min.json', JSON.stringify(compressedChanges));
+  writeFile('./experiment/out/changes.json', JSON.stringify(compressedChanges, undefined, 2));
+  writeFile('./experiment/out/changes.min.json', JSON.stringify(compressedChanges));
 })();
 
 function compressChanges(changes) {
