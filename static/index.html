@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title>Differential loading test page</title>
+
+    <!-- Silence invariant: ReactDOM was loaded before React. Make sure you load the React package before loading ReactDOM. -->
+    <script src="react/16.8.0/react.production.min.js"></script>
+
+    <!-- Change version here to see differential loading in action -->
+    <script src="react-dom/16.8.0/react-dom.production.min.js"></script>
+
+    <script>
+      navigator.serviceWorker.register('./serviceWorker.js');
+    </script>
+  </head>
+
+  <body>
+    Differential loading test page
+  </body>
+
+</html>

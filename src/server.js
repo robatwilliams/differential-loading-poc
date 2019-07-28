@@ -13,6 +13,7 @@ const readFile = util.promisify(fs.readFile);
 
 const app = express();
 app.use(compression());
+app.use(express.static('./static'));
 
 app.get('/:package/:version/:file', asyncRoute(handleRequest));
 
@@ -29,7 +30,7 @@ async function handleRequest(request, response) {
   response.set('Cache-Control', 'public, max-age=31536000');
   response.vary('Accept');
 
-  if (request.accepts(DELTA_CONTENT_TYPE)) {
+  if (request.accepts([DELTA_CONTENT_TYPE, '*/*']) === DELTA_CONTENT_TYPE) {
     return handleDifferentialRequest(request, response, content);
   }
 
