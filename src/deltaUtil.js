@@ -1,3 +1,4 @@
+// Duplicated in serviceWorker.js
 function applyDelta(delta, str) {
   // From https://github.com/kpdecker/jsdiff/issues/95#issuecomment-218429097
 
