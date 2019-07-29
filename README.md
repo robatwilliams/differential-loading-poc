@@ -1,6 +1,8 @@
 # Differential bundle loading POC
 > Using service workers and a version-aware server to reduce network data transfer of slightly-different application bundles.
 
+> Update: turns out it's been done before, see [gmetais/sw-delta](https://github.com/gmetais/sw-delta) and [issues/1](https://github.com/robatwilliams/differential-loading-poc/issues/1)
+
 Proof of concept only, to solve an unconfirmed problem. Would require significant benefit analysis, development, and proving, before being suitable for production use. It might not be a good idea.
 
 
